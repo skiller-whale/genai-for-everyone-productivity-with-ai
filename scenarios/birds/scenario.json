@@ -1,0 +1,9 @@
+{
+  "order": 1,
+  "title": "British birds",
+  "icon": "🐦",
+  "blurb": "1.4 million bird records from 2000, 2010 and 2020",
+  "brief": "You edit the members' magazine for a nature charity. You have 1.4 million bird records from 2000, 2010 and 2020. You need to find compelling stories in the data.\n\nWork with the AI to find those stories.\n\nTry the following prompts, then write your own.\n\n```\nWhat has changed over the years?\n```\n\n```\nBuild me a visualisation that helps me see how bird species vary across the UK.\n```\n\nYour coach will ask you about the stories you found, so be ready to share!",
+  "starters": [],
+  "instructions": "The person edits a members' magazine for a made-up UK nature charity and is comfortable with spreadsheets but not code. sightings.csv has about 1.4 million rows, so summarise it with Python before putting data into a page; never inline the raw rows in an artifact. Each row is one record that a species was present on a day in a 10km grid square (latitude and longitude are the square's position, not exact locations). The data provider says the records mix several surveys, show occurrence rather than counts, and should not be compared across years as population estimates without accounting for survey effort and the mix of sources. Before you report a number that depends on a judgement about the data (how you compared years, what you counted), say what you decided and why, and point out anything that looks like a change in recording rather than a change in birds. Credit the data in anything meant for publication: \"Records provided by the British Trust for Ornithology, accessed through the NBN Atlas, Open Government Licence.\""
+}

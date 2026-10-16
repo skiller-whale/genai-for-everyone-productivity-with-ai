@@ -1,0 +1,68 @@
+# Two containers sharing one workspace folder, plus the coach sync:
+#   sandbox  the resident computer Claude Code runs in
+#   app      the web page and API; runs Claude Code in the sandbox via the docker socket
+#   sync     sends the coach COWORK.md: a link to the read-only /watch view and a summary
+name: cowork
+
+services:
+  sandbox:
+    build: ./sandbox
+    container_name: cowork-sandbox
+    init: true
+    restart: unless-stopped
+    volumes:
+      - ./workspace-data:/workspace
+
+  app:
+    build: .
+    depends_on: [sandbox]
+    restart: unless-stopped
+    # Host 1001 -> container 3000. The module's exercise_config.yaml exposes
+    # port 1001, and learners open http://localhost:1001 in the hosted env.
+    ports:
+      - "${COWORK_PORT:-1001}:3000"
+    volumes:
+      - ./workspace-data:/workspace
+      - ./scenarios:/app/scenarios:ro
+      - /var/run/docker.sock:/var/run/docker.sock
+      - coach_sync:/app/coach_sync
+    environment:
+      SANDBOX_CONTAINER: cowork-sandbox
+      # Locally: a Claude Code token (`claude setup-token`) or an API key, from .env.
+      CLAUDE_CODE_OAUTH_TOKEN: ${CLAUDE_CODE_OAUTH_TOKEN:-}
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
+      ANTHROPIC_MODEL: ${ANTHROPIC_MODEL:-}
+      # Hosted environment: the Skiller Whale Bedrock proxy, keyed by the attendance id.
+      CLAUDE_CODE_USE_BEDROCK: ${CLAUDE_CODE_USE_BEDROCK:-}
+      ANTHROPIC_BEDROCK_BASE_URL: ${ANTHROPIC_BEDROCK_BASE_URL:-}
+      AWS_REGION: ${AWS_REGION:-eu-west-1}
+      AWS_ACCESS_KEY_ID: ${SW_ATTENDANCE_ID:-}
+      AWS_SECRET_ACCESS_KEY: ${SW_ATTENDANCE_ID:+unused}
+      # The coach sync file (COWORK.md) is written here, for the sync service
+      # below. SW_HOSTNAME (set on hosted-env VMs) and the public port make the
+      # coach's link: https://<vm>-port-1001.<domain>/watch. Unset locally.
+      COACH_SYNC_DIR: ${COACH_SYNC_DIR:-}
+      SW_HOSTNAME: ${SW_HOSTNAME:-}
+      COWORK_PUBLIC_PORT: ${COWORK_PORT:-1001}
+
+  # Sends the coach one file only, COWORK.md. It appears in the coach's
+  # "Recently edited files" and updates as the learner works. Hosted only:
+  # `docker compose --profile hosted up` starts it.
+  sync:
+    profiles: [hosted]
+    image: "ghcr.io/skiller-whale/learnersync:0.2.8"
+    network_mode: "host"
+    environment:
+      SERVER_URL: https://train.skillerwhale.com
+      SW_RUNNING_IN_HOSTED_ENV:
+      WATCHER_BASE_PATH: "/app/coach"
+      ATTENDANCE_ID_FILE: "/app/sync/attendance_id"
+      WATCHED_EXTS: ".md"
+    volumes:
+      - coach_sync:/app/coach:ro
+      - ./attendance_id:/app/sync/attendance_id
+    tty: true
+    stdin_open: true
+
+volumes:
+  coach_sync:

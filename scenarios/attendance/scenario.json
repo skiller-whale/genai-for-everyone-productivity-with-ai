@@ -1,0 +1,9 @@
+{
+  "order": 2,
+  "title": "Coaching attendance",
+  "icon": "📊",
+  "blurb": "Nine months of invites and attendance, six client companies",
+  "brief": "You manage coaching programmes for six client companies. You have nine months of session invites and attendance records, and you want a check you can open every week.\n\nWork with the AI to build an app that shows how each group is doing and who you should follow up with.\n\nYou can ask the agent to build whatever you think will be useful. Or try these prompts in order to see the kind of thing it can do.\n\n```\nMake me a weekly check I can open every Monday that tells me how each group is doing and who to follow up with.\n```\n\n```\nMake it so I can expand each group to see its learners.\n```\n\n```\nAdd a button next to each learner that writes a short check-in message to them.\n```\n\n```\nWhen I click that button, have the AI write the message from the learner's attendance, instead of using a template.\n```",
+  "starters": [],
+  "instructions": "Today is Monday 28 September 2026. The person is an account manager at a coaching provider, comfortable with spreadsheets but not with code. Each client company has its own quarterly review, so findings per company matter. Learners appear only as ids; there is no names list. Each group (cohort) is the set of learners invited to the same weekly sessions, but the exports don't name the groups, so work them out if you need them and explain how. Before you report a number that depends on a judgement about the data (what counts as a missed session, how to treat odd rows), say what you decided and why, and point out anything in the data that surprised you."
+}
