@@ -31,6 +31,7 @@ it makes (reports, dashboards, small tools) in the panel on the right.
 ## Run it locally
 
 ```sh
+./fetch-data.sh        # the birds data, see below
 cp .env.example .env     # add CLAUDE_CODE_OAUTH_TOKEN (from `claude setup-token`) or ANTHROPIC_API_KEY
 docker compose up -d --build --wait
 open http://localhost:1001   # or COWORK_PORT in .env
@@ -68,6 +69,25 @@ keeps one out of the app. Learners can't add files of their own. Files in
 `files/` ending `.gz` are unpacked when the workspace is seeded, so big data
 stays small in git. The file panel previews only the first 2 MB of a big
 text or CSV file.
+
+### The big files are not in git
+
+The British birds scenario's photos (`scenarios/birds/files/images/`, 18 MB)
+and bird records (`sightings.csv.gz`, 21 MB) are kept out of the curriculum
+repo, so it stays small. They live in the `data-v1` release of the exercise
+repo, [skiller-whale/genai-for-everyone-productivity-with-ai](https://github.com/skiller-whale/genai-for-everyone-productivity-with-ai/releases/tag/data-v1),
+as `birds-data.tar.gz`. `fetch-data.sh` downloads and unpacks them; the
+hosted environment runs it at startup, and it does nothing if they are
+already there. Both paths are in `.gitignore`.
+
+They can't simply be committed to the exercise repo: the curriculum's sync
+replaces that repo's files with `_code/` each time, so anything not in
+`_code/` would be deleted.
+
+To change them, make a new tarball from `scenarios/birds/files/`
+(`tar -czf birds-data.tar.gz images sightings.csv.gz`), publish it as a new
+release (`data-v2`), and update the URL in `fetch-data.sh`. Don't replace the
+asset in an existing release: sessions already running rely on it.
 
 - **British birds**: 1.46 million bird records for 2000, 2010 and 2020 from
   the British Trust for Ornithology via the NBN Atlas (Open Government

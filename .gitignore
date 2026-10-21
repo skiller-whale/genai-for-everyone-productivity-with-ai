@@ -2,3 +2,6 @@ node_modules
 .env
 workspace-data
 attendance_id
+# Downloaded by fetch-data.sh
+scenarios/birds/files/images/
+scenarios/birds/files/sightings.csv.gz
