@@ -24,7 +24,7 @@ it makes (reports, dashboards, small tools) in the panel on the right.
   (`src/artifact-bridge.js`): `load()`, `save(data)` (written to
   `artifact-data/<file>.json`, where Claude can read it) and `send(text)`
   (posts a chat message). Editing a shown file reloads it in the panel.
-- Claude Code loads each scenario's own `.claude/` folder (CLAUDE.md, skills)
+- Claude Code loads each scenario's own `.claude/` folder (CLAUDE.md)
   and nothing from anyone's user settings. Its sessions live in the sandbox,
   so a conversation resumes across app restarts.
 

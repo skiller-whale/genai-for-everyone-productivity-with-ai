@@ -13,8 +13,11 @@ import { ensureSeeded, listFiles, safePath, scenarioDir, seed, stateDir } from '
 // through the Agent SDK and turns what it says and does into ChatEvents, which
 // go to every open browser tab and into a log that survives restarts.
 
-/** Claude Code's own tools that Claude gets. No sub-agents, no web search. */
-const BUILT_IN_TOOLS = ['Bash', 'Read', 'Write', 'Edit', 'Glob', 'Grep', 'TodoWrite', 'WebFetch', 'Skill'];
+/**
+ * Claude Code's own tools that Claude gets. No sub-agents, no web search, and
+ * no skills: Claude Code's bundled ones (dataviz) sent it on slow detours.
+ */
+const BUILT_IN_TOOLS = ['Bash', 'Read', 'Write', 'Edit', 'Glob', 'Grep', 'TodoWrite', 'WebFetch'];
 
 type Saved = { sessionId?: string; events: ChatEvent[]; artifacts: Artifact[] };
 
@@ -121,9 +124,12 @@ class ScenarioSession {
         mcpServers: { cowork: this.artifactServer() },
         permissionMode: 'bypassPermissions',
         allowDangerouslySkipPermissions: true,
-        // Only the scenario's own .claude/ folder (CLAUDE.md, skills), never the user's.
+        // Only the scenario's own .claude/ folder (CLAUDE.md), never the user's.
         settingSources: ['project'],
         includePartialMessages: true,
+        // Learners wait for each turn in a live session. With low effort (and
+        // the prompt's Pace section) first answers take under a minute, not ten.
+        effort: 'low',
         resume: this.sessionId,
         abortController: this.abort,
         env: claudeEnv(),

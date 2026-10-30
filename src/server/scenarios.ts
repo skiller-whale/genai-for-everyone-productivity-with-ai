@@ -6,7 +6,7 @@ import { SCENARIOS_DIR } from './config';
 // A scenario is a folder under scenarios/:
 //   scenario.json   title, blurb, icon, brief, starters, instructions
 //   files/          copied into the scenario's workspace folder; anything in
-//                   files/.claude/ (CLAUDE.md, skills) is picked up by Claude Code
+//                   files/.claude/ (CLAUDE.md) is picked up by Claude Code
 // "hidden": true in scenario.json keeps a scenario out of the app.
 
 export type ScenarioDefinition = Scenario & {

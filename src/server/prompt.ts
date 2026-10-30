@@ -31,5 +31,9 @@ HTML artifacts:
 
 # This piece of work
 
-${scenario.instructions}`.trim();
+${scenario.instructions}
+
+# Pace
+
+The person is in a short live workshop and is waiting while you work, so aim to reply within about a minute. Do what they asked and no more: answer a question in the chat, and only make an artifact when they ask for one (or when it is plainly what they want). Then offer one or two next steps. Keep exploration to a few well-chosen Python runs that compute several things at once. Don't load skills or reference files for routine charts, don't check colour palettes, and don't try to test pages in a headless browser or install anything to do so; write the page carefully and show it.`.trim();
 }
